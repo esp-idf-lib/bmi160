@@ -1,0 +1,14 @@
+---
+name: Validate component
+
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+jobs:
+  validate-esp-idf-lib-component:
+    uses: esp-idf-lib/shared-workflows/.github/workflows/validate-component.yml@main

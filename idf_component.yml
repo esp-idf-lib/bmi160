@@ -1,0 +1,27 @@
+---
+version: 1.0.0
+description: "This is a template component"
+license: "MIT"
+targets:
+  - esp32
+  - esp32c2
+  - esp32c3
+  - esp32c5
+  - esp32c6
+  - esp32c61
+  - esp32h2
+  - esp32p4
+  - esp32s2
+  - esp32s3
+dependencies: {}
+maintainers:
+  - Tomoyuki Sakurai (@trombik) <y@trombik.org>
+  - Ruslan V. Uss (@UncleRus) <unclerus@gmail.com>
+url: https://github.com/esp-idf-lib/core
+repository: https://github.com/esp-idf-lib/template-component
+documentation: https://esp-idf-lib.github.io/template-component/
+issues: https://github.com/esp-idf-lib/template-component/issues
+discussion: https://github.com/esp-idf-lib/core/discussions
+files:
+  exclude:
+    - docs/**/*
