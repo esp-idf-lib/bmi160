@@ -45,7 +45,7 @@ static void IRAM_ATTR isr_new_data(void* arg)
 
 void bmi160_task(void *pvParameters)
 {
-    
+
     bmi160_t bmi160_dev;
     memset(&bmi160_dev.i2c_dev, 0, sizeof(i2c_dev_t));
 
@@ -65,16 +65,16 @@ void bmi160_task(void *pvParameters)
 
     //install gpio isr service
 #ifdef CONFIG_IDF_TARGET_ESP8266
-    gpio_install_isr_service(1<<10u);
+    gpio_install_isr_service(1 << 10u);
 #else
     gpio_install_isr_service(ESP_INTR_FLAG_IRAM);
 #endif
     //hook isr handler for specific gpio pin
     gpio_isr_handler_add(CONFIG_EXAMPLE_INT1_GPIO, isr_new_data, NULL);
 
-    ESP_LOGI(TAG,"Example for tap detection\n");
+    ESP_LOGI(TAG, "Example for tap detection\n");
 
-    ESP_LOGI(TAG,"Initializing BMI160\n");
+    ESP_LOGI(TAG, "Initializing BMI160\n");
     ESP_ERROR_CHECK(bmi160_init(&bmi160_dev, BMI160_I2C_ADDRESS_VDD, I2C_PORT, CONFIG_EXAMPLE_SDA_GPIO, CONFIG_EXAMPLE_SCL_GPIO));
 
     ESP_ERROR_CHECK(bmi160_self_test(&bmi160_dev));
@@ -89,7 +89,7 @@ void bmi160_task(void *pvParameters)
         .gyrMode = BMI160_PMU_GYR_SUSPEND,
         .accUs = 1u
     };
-    
+
     ESP_ERROR_CHECK(bmi160_start(&bmi160_dev, &bmi160_conf));
 
     //configure tap detection
@@ -113,13 +113,12 @@ void bmi160_task(void *pvParameters)
     };
     bmi160_enable_int_tap(&bmi160_dev, &intOutConf);
 
-    while(1)
-    {
+    while (1) {
         //wait for interrupt
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 
         //tap detected
-        ESP_LOGI(TAG,"Tap detected\n");
+        ESP_LOGI(TAG, "Tap detected\n");
     }
 
     bmi160_free(&bmi160_dev);

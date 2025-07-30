@@ -49,7 +49,7 @@ static void IRAM_ATTR isr_new_data(void* arg)
 
 void bmi160_task(void *pvParameters)
 {
-    
+
     bmi160_t bmi160_dev;
     memset(&bmi160_dev.i2c_dev, 0, sizeof(i2c_dev_t));
 
@@ -70,16 +70,16 @@ void bmi160_task(void *pvParameters)
 
     //install gpio isr service
 #ifdef CONFIG_IDF_TARGET_ESP8266
-    gpio_install_isr_service(1<<10u);
+    gpio_install_isr_service(1 << 10u);
 #else
     gpio_install_isr_service(ESP_INTR_FLAG_IRAM);
 #endif
     //hook isr handler for specific gpio pin
     gpio_isr_handler_add(CONFIG_EXAMPLE_INT1_GPIO, isr_new_data, NULL);
 #endif
-    ESP_LOGI(TAG,"Example for step counter\n");
+    ESP_LOGI(TAG, "Example for step counter\n");
 
-    ESP_LOGI(TAG,"Initializing BMI160\n");
+    ESP_LOGI(TAG, "Initializing BMI160\n");
     ESP_ERROR_CHECK(bmi160_init(&bmi160_dev, BMI160_I2C_ADDRESS_VDD, I2C_PORT, CONFIG_EXAMPLE_SDA_GPIO, CONFIG_EXAMPLE_SCL_GPIO));
 
     ESP_ERROR_CHECK(bmi160_self_test(&bmi160_dev));
@@ -94,7 +94,7 @@ void bmi160_task(void *pvParameters)
         .gyrMode = BMI160_PMU_GYR_SUSPEND,
         .accUs = 1u
     };
-    
+
     ESP_ERROR_CHECK(bmi160_start(&bmi160_dev, &bmi160_conf));
 
     ESP_ERROR_CHECK(bmi160_enable_step_counter(&bmi160_dev, BMI160_STEP_COUNTER_SENSITIVE));
@@ -111,22 +111,20 @@ void bmi160_task(void *pvParameters)
     ESP_ERROR_CHECK(bmi160_enable_int_step(&bmi160_dev, &intOutConf));
 #endif
 
-    while(1)
-    {
+    while (1) {
 
-    #ifdef USE_INT
+#ifdef USE_INT
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
-    #else
+#else
         vTaskDelay(pdMS_TO_TICKS(10000));
-    #endif
+#endif
         //to read out step count must switch mode to normal
         ESP_ERROR_CHECK(bmi160_switch_mode(&bmi160_dev, BMI160_PMU_ACC_NORMAL, BMI160_PMU_GYR_SUSPEND));
 
         uint16_t step_count = 0;
         esp_err_t ret = bmi160_read_step_counter(&bmi160_dev, &step_count);
-        if(ret == ESP_OK)
-        {
-            ESP_LOGI(TAG,"Step count: %d\n", step_count);
+        if (ret == ESP_OK) {
+            ESP_LOGI(TAG, "Step count: %d\n", step_count);
         }
 
         //go back to low power mode

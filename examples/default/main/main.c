@@ -49,7 +49,7 @@ static void IRAM_ATTR isr_new_data(void* arg)
 
 void bmi160_test(void *pvParameters)
 {
-    
+
     bmi160_t bmi160_dev;
     memset(&bmi160_dev.i2c_dev, 0, sizeof(i2c_dev_t));
 
@@ -70,16 +70,16 @@ void bmi160_test(void *pvParameters)
 
     //install gpio isr service
 #ifdef CONFIG_IDF_TARGET_ESP8266
-    gpio_install_isr_service(1<<10u);
+    gpio_install_isr_service(1 << 10u);
 #else
     gpio_install_isr_service(ESP_INTR_FLAG_IRAM);
 #endif
     //hook isr handler for specific gpio pin
     gpio_isr_handler_add(CONFIG_EXAMPLE_INT1_GPIO, isr_new_data, NULL);
 #endif
-    ESP_LOGI(TAG,"Example for data read out \n");
+    ESP_LOGI(TAG, "Example for data read out \n");
 
-    ESP_LOGI(TAG,"Initializing BMI160\n");
+    ESP_LOGI(TAG, "Initializing BMI160\n");
 
     ESP_ERROR_CHECK(bmi160_init(&bmi160_dev, ADDR, I2C_PORT, CONFIG_EXAMPLE_SDA_GPIO, CONFIG_EXAMPLE_SCL_GPIO));
 
@@ -95,7 +95,7 @@ void bmi160_test(void *pvParameters)
         .gyrMode = BMI160_PMU_GYR_NORMAL,
         .accUs = 0u
     };
-    
+
     ESP_ERROR_CHECK(bmi160_start(&bmi160_dev, &bmi160_conf));
 
     ESP_ERROR_CHECK(bmi160_calibrate(&bmi160_dev));
@@ -111,33 +111,28 @@ void bmi160_test(void *pvParameters)
     ESP_ERROR_CHECK(bmi160_enable_int_new_data(&bmi160_dev, &intOutConf));
 #endif
 
-    while(1)
-    {
+    while (1) {
 
-    #ifdef USE_NEW_DATA_INT
+#ifdef USE_NEW_DATA_INT
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 
         bmi160_result_t result;
         esp_err_t ret = bmi160_read_data(&bmi160_dev, &result);
-        if(ret == ESP_OK)
-        {
-            ESP_LOGI(TAG,"%+.3f %+.3f %+.3f %+.3f %+.3f %+.3f\n", result.accX, result.accY, result.accZ, result.gyroX, result.gyroY, result.gyroZ);
+        if (ret == ESP_OK) {
+            ESP_LOGI(TAG, "%+.3f %+.3f %+.3f %+.3f %+.3f %+.3f\n", result.accX, result.accY, result.accZ, result.gyroX, result.gyroY, result.gyroZ);
+        } else {
+            ESP_LOGI(TAG, "No new data\n");
         }
-        else
-        {
-            ESP_LOGI(TAG,"No new data\n");
-        }
-    #else
+#else
         bmi160_result_t result;
         esp_err_t ret = bmi160_read_data(&bmi160_dev, &result);
-        if(ret == ESP_OK)
-        {
+        if (ret == ESP_OK) {
             //print all data in format with 3 decimal places
-            ESP_LOGI(TAG,"Accel: %+.3f %+.3f %+.3f Gyro: %+.3f %+.3f %+.3f\n", result.accX, result.accY, result.accZ, result.gyroX, result.gyroY, result.gyroZ);
+            ESP_LOGI(TAG, "Accel: %+.3f %+.3f %+.3f Gyro: %+.3f %+.3f %+.3f\n", result.accX, result.accY, result.accZ, result.gyroX, result.gyroY, result.gyroZ);
         }
 
         vTaskDelay(pdMS_TO_TICKS(1000));
-    #endif
+#endif
     }
 
     ESP_ERROR_CHECK(bmi160_free(&bmi160_dev));

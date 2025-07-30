@@ -16,8 +16,8 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
- #include <freertos/FreeRTOS.h>
- #include <freertos/task.h>
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
 #include <esp_log.h>
 #include <esp_idf_lib_helpers.h>
 #include <esp_err.h>
@@ -96,9 +96,8 @@ esp_err_t bmi160_init(bmi160_t *dev, uint8_t addr, i2c_port_t port, gpio_num_t s
     memset(&dev->gBias, 0, sizeof(dev->gBias));
 
 
-    
-    if (i2c_dev_create_mutex(&dev->i2c_dev) != ESP_OK)
-    {
+
+    if (i2c_dev_create_mutex(&dev->i2c_dev) != ESP_OK) {
         ESP_LOGE(TAG, "Failed to create mutex");
         return ESP_FAIL;
     }
@@ -115,55 +114,55 @@ esp_err_t bmi160_set_acc_range(bmi160_t *dev, bmi160_acc_range_t range)
 {
     dev->accRange = range;
 
-    switch(range){
-        case BMI160_ACC_RANGE_2G:
-            dev->aRes = 2.0f / 32768.0f;
-            break;
-        case BMI160_ACC_RANGE_4G:
-            dev->aRes = 4.0f / 32768.0f;
-            break;
-        case BMI160_ACC_RANGE_8G:
-            dev->aRes = 8.0f / 32768.0f;
-            break;
-        case BMI160_ACC_RANGE_16G:
-            dev->aRes = 16.0f / 32768.0f;
-            break;
-        default:
-            return ESP_FAIL;
+    switch (range) {
+    case BMI160_ACC_RANGE_2G:
+        dev->aRes = 2.0f / 32768.0f;
+        break;
+    case BMI160_ACC_RANGE_4G:
+        dev->aRes = 4.0f / 32768.0f;
+        break;
+    case BMI160_ACC_RANGE_8G:
+        dev->aRes = 8.0f / 32768.0f;
+        break;
+    case BMI160_ACC_RANGE_16G:
+        dev->aRes = 16.0f / 32768.0f;
+        break;
+    default:
+        return ESP_FAIL;
     }
 
-	return bmi160_write_reg(dev, BMI160_ACC_RANGE, range);  // Set up scale Accel range.
+    return bmi160_write_reg(dev, BMI160_ACC_RANGE, range);  // Set up scale Accel range.
 }
 
 esp_err_t bmi160_set_gyr_range(bmi160_t *dev, bmi160_gyr_range_t range)
 {
     dev->gyrRange = range;
 
-    switch(range){
-        case BMI160_GYR_RANGE_2000DPS:
-            dev->gRes = 2000.0f / 32768.0f;
-            break;
-        case BMI160_GYR_RANGE_1000DPS:
-            dev->gRes = 1000.0f / 32768.0f;
-            break;
-        case BMI160_GYR_RANGE_500DPS:
-            dev->gRes = 500.0f / 32768.0f;
-            break;
-        case BMI160_GYR_RANGE_250DPS:
-            dev->gRes = 250.0f / 32768.0f;
-            break;
-        case BMI160_GYR_RANGE_125DPS:
-            dev->gRes = 125.0f / 32768.0f;
-            break;
-        default:
-            return ESP_FAIL;
+    switch (range) {
+    case BMI160_GYR_RANGE_2000DPS:
+        dev->gRes = 2000.0f / 32768.0f;
+        break;
+    case BMI160_GYR_RANGE_1000DPS:
+        dev->gRes = 1000.0f / 32768.0f;
+        break;
+    case BMI160_GYR_RANGE_500DPS:
+        dev->gRes = 500.0f / 32768.0f;
+        break;
+    case BMI160_GYR_RANGE_250DPS:
+        dev->gRes = 250.0f / 32768.0f;
+        break;
+    case BMI160_GYR_RANGE_125DPS:
+        dev->gRes = 125.0f / 32768.0f;
+        break;
+    default:
+        return ESP_FAIL;
     }
 
     return bmi160_write_reg(dev, BMI160_GYR_RANGE, range);  // Set up scale Gyro range.
 }
 
 esp_err_t bmi160_set_acc_conf(bmi160_t *dev, bmi160_acc_odr_t odr, bmi160_acc_lp_avg_t avg, bmi160_acc_us_t acc_us)
-{  
+{
     dev->accOdr = odr;
     dev->accConf = (odr & 0x0Fu) | ((avg & 0x07u) << 4) | ((acc_us & 0x1u) << 7);
 
@@ -184,9 +183,8 @@ esp_err_t bmi160_read_data(bmi160_t *dev, bmi160_result_t *result)
 
     int16_t data[6];
     //loop to convert 2 8bit values to 16 bit value
-    for(int i = 0; i < 6; i++)
-    {
-        data[i] = ((int16_t)(rawData[i*2+1]) << 8) | rawData[i*2];
+    for (int i = 0; i < 6; i++) {
+        data[i] = ((int16_t)(rawData[i * 2 + 1]) << 8) | rawData[i * 2];
     }
 
     result->accX = ((float)data[3] * dev->aRes) - dev->aBias[0]; //acceleration x
@@ -201,78 +199,60 @@ esp_err_t bmi160_read_data(bmi160_t *dev, bmi160_result_t *result)
 
 static bool is_acc_mode_valid(bmi160_pmu_acc_mode_t mode)
 {
-    switch(mode)
-    {
-        case BMI160_PMU_ACC_SUSPEND:
-        case BMI160_PMU_ACC_NORMAL:
-        case BMI160_PMU_ACC_LOW_POWER:
-            return true;
-        default:
-            return false;
+    switch (mode) {
+    case BMI160_PMU_ACC_SUSPEND:
+    case BMI160_PMU_ACC_NORMAL:
+    case BMI160_PMU_ACC_LOW_POWER:
+        return true;
+    default:
+        return false;
     }
 }
 
 static bool is_gyr_mode_valid(bmi160_pmu_gyr_mode_t mode)
 {
-    switch(mode)
-    {
-        case BMI160_PMU_GYR_SUSPEND:
-        case BMI160_PMU_GYR_NORMAL:
-        case BMI160_PMU_GYR_FAST_STARTUP:
-            return true;
-        default:
-            return false;
+    switch (mode) {
+    case BMI160_PMU_GYR_SUSPEND:
+    case BMI160_PMU_GYR_NORMAL:
+    case BMI160_PMU_GYR_FAST_STARTUP:
+        return true;
+    default:
+        return false;
     }
 }
 
 static bool is_acc_odr_fits_mode(bmi160_acc_odr_t odr, bmi160_pmu_acc_mode_t mode, bmi160_acc_lp_avg_t avg)
 {
     bool result = false;
-    switch(mode)
-    {
-        case BMI160_PMU_ACC_SUSPEND:
+    switch (mode) {
+    case BMI160_PMU_ACC_SUSPEND:
+        result = true;
+        break;
+    case BMI160_PMU_ACC_NORMAL:
+        result = (odr >= BMI160_ACC_ODR_12_5HZ);
+        break;
+    case BMI160_PMU_ACC_LOW_POWER:
+        if ((odr == BMI160_ACC_ODR_400HZ) && (avg <= BMI160_ACC_LP_AVG_2)) {
             result = true;
-            break;
-        case BMI160_PMU_ACC_NORMAL:
-            result = (odr >= BMI160_ACC_ODR_12_5HZ);
-            break;
-        case BMI160_PMU_ACC_LOW_POWER:
-            if((odr == BMI160_ACC_ODR_400HZ) && (avg <= BMI160_ACC_LP_AVG_2))
-            {
-                result = true;
-            }
-            else if((odr == BMI160_ACC_ODR_200HZ) && (avg <= BMI160_ACC_LP_AVG_4))
-            {
-                result = true;
-            }
-            else if((odr == BMI160_ACC_ODR_100HZ) && (avg <= BMI160_ACC_LP_AVG_8))
-            {
-                result = true;
-            }
-            else if((odr == BMI160_ACC_ODR_50HZ) && (avg <= BMI160_ACC_LP_AVG_16))
-            {
-                result = true;
-            }
-            else if((odr == BMI160_ACC_ODR_25HZ) && (avg <= BMI160_ACC_LP_AVG_32))
-            {
-                result = true;
-            }
-            else if((odr == BMI160_ACC_ODR_12_5HZ) && (avg <= BMI160_ACC_LP_AVG_64))
-            {
-                result = true;
-            }
-            else if((odr <= BMI160_ACC_ODR_6_25HZ) && (avg <= BMI160_ACC_LP_AVG_128))
-            {
-                result = true;
-            }
-            else
-            {
-                result = false;
-            }
-            break;
-        default:
+        } else if ((odr == BMI160_ACC_ODR_200HZ) && (avg <= BMI160_ACC_LP_AVG_4)) {
+            result = true;
+        } else if ((odr == BMI160_ACC_ODR_100HZ) && (avg <= BMI160_ACC_LP_AVG_8)) {
+            result = true;
+        } else if ((odr == BMI160_ACC_ODR_50HZ) && (avg <= BMI160_ACC_LP_AVG_16)) {
+            result = true;
+        } else if ((odr == BMI160_ACC_ODR_25HZ) && (avg <= BMI160_ACC_LP_AVG_32)) {
+            result = true;
+        } else if ((odr == BMI160_ACC_ODR_12_5HZ) && (avg <= BMI160_ACC_LP_AVG_64)) {
+            result = true;
+        } else if ((odr <= BMI160_ACC_ODR_6_25HZ) && (avg <= BMI160_ACC_LP_AVG_128)) {
+            result = true;
+        } else {
             result = false;
-            break;
+        }
+        break;
+    default:
+        result = false;
+        break;
     }
 
     return result;
@@ -283,9 +263,8 @@ esp_err_t bmi160_start(bmi160_t *dev, bmi160_conf_t* conf)
     //read device id
     uint8_t device_id;
     bmi160_read_reg(dev, BMI160_CHIP_ID, &device_id);
-    ESP_LOGD(TAG,"Device ID: 0x%02x\n", device_id);
-    if(device_id != BMI160_CHIP_ID_DEFAULT_VALUE)
-    {
+    ESP_LOGD(TAG, "Device ID: 0x%02x\n", device_id);
+    if (device_id != BMI160_CHIP_ID_DEFAULT_VALUE) {
         ESP_LOGE(TAG, "Wrong device ID: 0x%02x", device_id);
         return ESP_FAIL;
     }
@@ -293,9 +272,8 @@ esp_err_t bmi160_start(bmi160_t *dev, bmi160_conf_t* conf)
     //read error status
     uint8_t err;
     bmi160_read_reg(dev, BMI160_ERR_REG, &err);
-    ESP_LOGD(TAG,"Error: 0x%02x\n", err);
-    if(err != 0)
-    {
+    ESP_LOGD(TAG, "Error: 0x%02x\n", err);
+    if (err != 0) {
         ESP_LOGE(TAG, "Error: 0x%02x", err);
     }
 
@@ -312,18 +290,15 @@ esp_err_t bmi160_start(bmi160_t *dev, bmi160_conf_t* conf)
     dev->gyrOdr = conf->gyrOdr;
 
     //validate parameters
-    if(!is_acc_mode_valid(conf->accMode))
-    {
+    if (!is_acc_mode_valid(conf->accMode)) {
         ESP_LOGE(TAG, "Invalid Accelerometer Mode");
         return ESP_FAIL;
     }
-    if(!is_gyr_mode_valid(conf->gyrMode))
-    {
+    if (!is_gyr_mode_valid(conf->gyrMode)) {
         ESP_LOGE(TAG, "Invalid Gyroscope Mode");
         return ESP_FAIL;
     }
-    if(!is_acc_odr_fits_mode(conf->accOdr, conf->accMode, conf->accAvg))
-    {
+    if (!is_acc_odr_fits_mode(conf->accOdr, conf->accMode, conf->accAvg)) {
         ESP_LOGE(TAG, "Invalid Accelerometer ODR for the mode");
         return ESP_FAIL;
     }
@@ -334,57 +309,49 @@ esp_err_t bmi160_start(bmi160_t *dev, bmi160_conf_t* conf)
     vTaskDelay(pdMS_TO_TICKS(100));
 
     uint8_t pmu_status;
-    if(conf->accMode != BMI160_PMU_ACC_SUSPEND)
-    {
+    if (conf->accMode != BMI160_PMU_ACC_SUSPEND) {
         //start up accelerometer
         bmi160_write_reg(dev, BMI160_CMD, conf->accMode);
         vTaskDelay(pdMS_TO_TICKS(100));
         bmi160_read_reg(dev, BMI160_PMU_STATUS, &pmu_status);
-        if(((pmu_status & 0x30) >> 4) != (conf->accMode & 0x3))
-        {
+        if (((pmu_status & 0x30) >> 4) != (conf->accMode & 0x3)) {
             ESP_LOGE(TAG, "Accelerometer PMU status: 0x%02x", (pmu_status & 0x30) >> 4);
             return ESP_FAIL;
         }
-        if(ESP_FAIL == bmi160_set_acc_range(dev, conf->accRange))
-        {
+        if (ESP_FAIL == bmi160_set_acc_range(dev, conf->accRange)) {
             ESP_LOGE(TAG, "Invalid Accelerometer Range");
             return ESP_FAIL;
         }
-        if(ESP_FAIL == bmi160_set_acc_conf(dev, conf->accOdr, conf->accAvg, conf->accUs))
-        {
+        if (ESP_FAIL == bmi160_set_acc_conf(dev, conf->accOdr, conf->accAvg, conf->accUs)) {
             ESP_LOGE(TAG, "Invalid Accelerometer configuration");
             return ESP_FAIL;
         }
     }
 
-    if(conf->gyrMode != BMI160_PMU_GYR_SUSPEND)
-    {
+    if (conf->gyrMode != BMI160_PMU_GYR_SUSPEND) {
         //start up gyroscope
         bmi160_write_reg(dev, BMI160_CMD, conf->gyrMode);
         vTaskDelay(pdMS_TO_TICKS(100));
         bmi160_read_reg(dev, BMI160_PMU_STATUS, &pmu_status);
-        if(((pmu_status & 0x0C) >> 2) != (conf->gyrMode & 0x3))
-        {
+        if (((pmu_status & 0x0C) >> 2) != (conf->gyrMode & 0x3)) {
             ESP_LOGE(TAG, "Gyroscope PMU status: 0x%02x", (pmu_status & 0x0C) >> 2);
             return ESP_FAIL;
         }
-        if(ESP_FAIL == bmi160_set_gyr_range(dev, conf->gyrRange))
-        {
+        if (ESP_FAIL == bmi160_set_gyr_range(dev, conf->gyrRange)) {
             ESP_LOGE(TAG, "Invalid Gyroscope Range");
             return ESP_FAIL;
         }
-        if(ESP_FAIL == bmi160_set_gyr_odr(dev, conf->gyrOdr))
-        {
+        if (ESP_FAIL == bmi160_set_gyr_odr(dev, conf->gyrOdr)) {
             ESP_LOGE(TAG, "Invalid Gyroscope ODR");
             return ESP_FAIL;
         }
     }
-    
+
     //pmu status
     bmi160_read_reg(dev, BMI160_PMU_STATUS, &pmu_status);
-    ESP_LOGD(TAG,"ACC PMU Status: 0x%02x\n", (pmu_status & 0x30) >> 4);
-    ESP_LOGD(TAG,"GYR PMU Status: 0x%02x\n", (pmu_status & 0x0C) >> 2);
-    ESP_LOGD(TAG,"MAG PMU Status: 0x%02x\n", (pmu_status & 0x03));
+    ESP_LOGD(TAG, "ACC PMU Status: 0x%02x\n", (pmu_status & 0x30) >> 4);
+    ESP_LOGD(TAG, "GYR PMU Status: 0x%02x\n", (pmu_status & 0x0C) >> 2);
+    ESP_LOGD(TAG, "MAG PMU Status: 0x%02x\n", (pmu_status & 0x03));
 
     return ESP_OK;
 }
@@ -395,8 +362,7 @@ esp_err_t bmi160_calibrate(bmi160_t *dev)
 
     bmi160_result_t result;
     float accX = 0, accY = 0, accZ = 0, gyroX = 0, gyroY = 0, gyroZ = 0;
-    for(int i = 0; i < 64; i++)
-    {
+    for (int i = 0; i < 64; i++) {
         bmi160_read_data(dev, &result);
         accX += result.accX;
         accY += result.accY;
@@ -424,18 +390,18 @@ esp_err_t bmi160_calibrate(bmi160_t *dev)
     dev->gBias[2] = gyroZ;
 
     //print bias values
-    ESP_LOGD(TAG,"Accel Bias: %+.3f %+.3f %+.3f Gyro Bias: %+.3f %+.3f %+.3f\n", dev->aBias[0], dev->aBias[1], dev->aBias[2], dev->gBias[0], dev->gBias[1], dev->gBias[2]);
+    ESP_LOGD(TAG, "Accel Bias: %+.3f %+.3f %+.3f Gyro Bias: %+.3f %+.3f %+.3f\n", dev->aBias[0], dev->aBias[1], dev->aBias[2], dev->gBias[0], dev->gBias[1], dev->gBias[2]);
 
     return ESP_OK;
 }
 
 /**
  * @brief self test for the BMI160
- * 
- * @note 
- * 
- * @param dev 
- * @return esp_err_t 
+ *
+ * @note
+ *
+ * @param dev
+ * @return esp_err_t
  */
 esp_err_t bmi160_self_test(bmi160_t *dev)
 {
@@ -443,12 +409,11 @@ esp_err_t bmi160_self_test(bmi160_t *dev)
     uint8_t device_id;
     bmi160_read_reg(dev, BMI160_CHIP_ID, &device_id);
     printf("Device ID: 0x%02x\n", device_id);
-    if(device_id != BMI160_CHIP_ID_DEFAULT_VALUE)
-    {
+    if (device_id != BMI160_CHIP_ID_DEFAULT_VALUE) {
         ESP_LOGE(TAG, "Wrong device ID: 0x%02x", device_id);
         return ESP_FAIL;
     }
-    
+
     //reset device
     bmi160_write_reg(dev, BMI160_CMD, 0xB6); // toggle software reset
     //delay 100ms
@@ -460,14 +425,14 @@ esp_err_t bmi160_self_test(bmi160_t *dev)
 
 
     // test negative direction
-    ESP_LOGD(TAG,"Accel self test sign 0\n");
+    ESP_LOGD(TAG, "Accel self test sign 0\n");
     uint8_t reg = (0x01 << 0) | (0x00 << 2) | (0x01 << 3); // acc_self_test_en = 1, acc_self_test_sign = 0, acc_self_test_amp = 1
     bmi160_write_reg(dev, BMI160_SELF_TEST, reg);
     vTaskDelay(pdMS_TO_TICKS(100));
     uint8_t acc_self_test_result;
     bmi160_read_reg(dev, BMI160_STATUS, &acc_self_test_result);
 
-    ESP_LOGD(TAG,"Accel self test result: %02x\n", acc_self_test_result);
+    ESP_LOGD(TAG, "Accel self test result: %02x\n", acc_self_test_result);
 
     uint8_t rawData[6];
     bmi160_read_reg_array(dev, BMI160_ACC_X_L, rawData, 6);
@@ -475,26 +440,26 @@ esp_err_t bmi160_self_test(bmi160_t *dev)
     float accY0 = (float)((int16_t)(rawData[3] << 8) | rawData[2]) * dev->aRes;
     float accZ0 = (float)((int16_t)(rawData[5] << 8) | rawData[4]) * dev->aRes;
 
-    ESP_LOGD(TAG,"Accel self test: %.3f %.3f %.3f\n", accX0, accY0, accZ0);
+    ESP_LOGD(TAG, "Accel self test: %.3f %.3f %.3f\n", accX0, accY0, accZ0);
 
     // test positive direction
-    ESP_LOGD(TAG,"Accel self test sign 1\n");
+    ESP_LOGD(TAG, "Accel self test sign 1\n");
     reg = (0x01 << 0) | (0x01 << 2) | (0x01 << 3); // acc_self_test_en = 1, acc_self_test_sign = 1, acc_self_test_amp = 1
     bmi160_write_reg(dev, BMI160_SELF_TEST, reg);
     vTaskDelay(pdMS_TO_TICKS(100));
     bmi160_read_reg(dev, BMI160_STATUS, &acc_self_test_result);
 
-    ESP_LOGD(TAG,"Accel self test result: %02x\n", acc_self_test_result);
+    ESP_LOGD(TAG, "Accel self test result: %02x\n", acc_self_test_result);
 
-    
+
     bmi160_read_reg_array(dev, BMI160_ACC_X_L, rawData, 6);
     float accX1 = (float)((int16_t)(rawData[1] << 8) | rawData[0]) * dev->aRes;
     float accY1 = (float)((int16_t)(rawData[3] << 8) | rawData[2]) * dev->aRes;
     float accZ1 = (float)((int16_t)(rawData[5] << 8) | rawData[4]) * dev->aRes;
 
-    ESP_LOGD(TAG,"Accel self test: %.3f %.3f %.3f\n", accX1, accY1, accZ1);
+    ESP_LOGD(TAG, "Accel self test: %.3f %.3f %.3f\n", accX1, accY1, accZ1);
 
-    ESP_LOGD(TAG,"Accel self test diff: %.3f %.3f %.3f\n", accX1 - accX0, accY1 - accY0, accZ1 - accZ0);
+    ESP_LOGD(TAG, "Accel self test diff: %.3f %.3f %.3f\n", accX1 - accX0, accY1 - accY0, accZ1 - accZ0);
 
 
     /* 2. gyroscope */
@@ -506,15 +471,12 @@ esp_err_t bmi160_self_test(bmi160_t *dev)
     vTaskDelay(pdMS_TO_TICKS(100));
     uint8_t gyr_self_test_result;
     bmi160_read_reg(dev, BMI160_STATUS, &gyr_self_test_result);
-    ESP_LOGD(TAG,"Gyro self test result: %02x\n", gyr_self_test_result);
-    if(gyr_self_test_result & (0x1 << 1))
-    {
-        ESP_LOGD(TAG,"Gyro self test failed\n");
+    ESP_LOGD(TAG, "Gyro self test result: %02x\n", gyr_self_test_result);
+    if (gyr_self_test_result & (0x1 << 1)) {
+        ESP_LOGD(TAG, "Gyro self test failed\n");
         return ESP_FAIL;
-    }
-    else
-    {
-        ESP_LOGD(TAG,"Gyro self test passed\n");
+    } else {
+        ESP_LOGD(TAG, "Gyro self test passed\n");
     }
 
     return ESP_OK;
@@ -522,33 +484,30 @@ esp_err_t bmi160_self_test(bmi160_t *dev)
 
 esp_err_t bmi160_enable_int_new_data(bmi160_t *dev, bmi160_int_out_conf_t* intOutConf)
 {
-        uint8_t data = 0;
+    uint8_t data = 0;
 
-        //configure interrupt output
-        bmi160_read_reg(dev, BMI160_INT_OUT_CTRL, &data);
-        data &= ~(0xfu << (intOutConf->intPin * 4u)); //clear bits
-        data |= (uint8_t)(intOutConf->intEnable << ((intOutConf->intPin * 4u) + 3u)); //set enable bit
-        data |= (uint8_t)(intOutConf->intOd << ((intOutConf->intPin * 4u) + 2u)); //set open-drain bit
-        data |= (uint8_t)(intOutConf->intLevel << ((intOutConf->intPin * 4u) + 1u)); //set active high bit
-        bmi160_write_reg(dev, BMI160_INT_OUT_CTRL, data);
+    //configure interrupt output
+    bmi160_read_reg(dev, BMI160_INT_OUT_CTRL, &data);
+    data &= ~(0xfu << (intOutConf->intPin * 4u)); //clear bits
+    data |= (uint8_t)(intOutConf->intEnable << ((intOutConf->intPin * 4u) + 3u)); //set enable bit
+    data |= (uint8_t)(intOutConf->intOd << ((intOutConf->intPin * 4u) + 2u)); //set open-drain bit
+    data |= (uint8_t)(intOutConf->intLevel << ((intOutConf->intPin * 4u) + 1u)); //set active high bit
+    bmi160_write_reg(dev, BMI160_INT_OUT_CTRL, data);
 
-        //map interrupt data ready
-        if(intOutConf->intPin == BMI160_PIN_INT1)
-        {
-            data = (1u << 7); //set bit for INT1
-        }
-        else
-        {
-            data = (1u << 3); //set bit for INT2
-        }
-        bmi160_write_reg(dev, BMI160_INT_MAP_1, data); //map data ready interrupt to INT1
-        
-        //enable interrupt    
-        bmi160_read_reg(dev, BMI160_INT_EN_1, &data);
-        data |= (1u << 4); // enable data ready interrupt
-        bmi160_write_reg(dev, BMI160_INT_EN_1, data);    
-    
-        return ESP_OK;
+    //map interrupt data ready
+    if (intOutConf->intPin == BMI160_PIN_INT1) {
+        data = (1u << 7); //set bit for INT1
+    } else {
+        data = (1u << 3); //set bit for INT2
+    }
+    bmi160_write_reg(dev, BMI160_INT_MAP_1, data); //map data ready interrupt to INT1
+
+    //enable interrupt
+    bmi160_read_reg(dev, BMI160_INT_EN_1, &data);
+    data |= (1u << 4); // enable data ready interrupt
+    bmi160_write_reg(dev, BMI160_INT_EN_1, data);
+
+    return ESP_OK;
 }
 
 esp_err_t bmi160_enable_step_counter(bmi160_t *dev, bmi160_step_counter_mode_t mode)
@@ -558,14 +517,13 @@ esp_err_t bmi160_enable_step_counter(bmi160_t *dev, bmi160_step_counter_mode_t m
     bmi160_write_reg(dev, BMI160_PMU_TRIGGER, 0x01);
     vTaskDelay(pdMS_TO_TICKS(100));
 
-    uint8_t config[2] = {0,0};
-    switch (mode)
-    {
+    uint8_t config[2] = {0, 0};
+    switch (mode) {
     case BMI160_STEP_COUNTER_NORMAL:
         config[0] = 0x15;
         config[1] = 0x03;
         break;
-    
+
     case BMI160_STEP_COUNTER_SENSITIVE:
         config[0] = 0x2D;
         config[1] = 0x00;
@@ -581,7 +539,7 @@ esp_err_t bmi160_enable_step_counter(bmi160_t *dev, bmi160_step_counter_mode_t m
         break;
     }
 
-    config[1] |= (1u<<3); //enable step counter
+    config[1] |= (1u << 3); //enable step counter
 
     //configure step counter
     ret = bmi160_write_reg_array(dev, BMI160_STEP_CONF_0, config, 2);
@@ -619,19 +577,16 @@ esp_err_t bmi160_enable_int_step(bmi160_t *dev, bmi160_int_out_conf_t* intOutCon
 
     //map interrupt step detection
     data = (1u << 0); //set bit for step detection
-    if(intOutConf->intPin == BMI160_PIN_INT1)
-    {
+    if (intOutConf->intPin == BMI160_PIN_INT1) {
         bmi160_write_reg(dev, BMI160_INT_MAP_0, data); //map step detection interrupt to INT1
-    }
-    else
-    {
+    } else {
         bmi160_write_reg(dev, BMI160_INT_MAP_1, data); //map step detection interrupt to INT2
     }
-    
-    //enable interrupt    
+
+    //enable interrupt
     bmi160_read_reg(dev, BMI160_INT_EN_2, &data);
     data |= (1u << 3); // enable step detection interrupt
-    bmi160_write_reg(dev, BMI160_INT_EN_2, data);    
+    bmi160_write_reg(dev, BMI160_INT_EN_2, data);
 
     return ESP_OK;
 }
@@ -640,13 +595,11 @@ esp_err_t bmi160_enable_int_step(bmi160_t *dev, bmi160_int_out_conf_t* intOutCon
 esp_err_t bmi160_switch_mode(bmi160_t *dev, bmi160_pmu_acc_mode_t accMode, bmi160_pmu_gyr_mode_t gyrMode)
 {
     //validate parameters
-    if(!is_acc_mode_valid(accMode))
-    {
+    if (!is_acc_mode_valid(accMode)) {
         ESP_LOGE(TAG, "Invalid Accelerometer Mode");
         return ESP_FAIL;
     }
-    if(!is_gyr_mode_valid(gyrMode))
-    {
+    if (!is_gyr_mode_valid(gyrMode)) {
         ESP_LOGE(TAG, "Invalid Gyroscope Mode");
         return ESP_FAIL;
     }
@@ -657,8 +610,7 @@ esp_err_t bmi160_switch_mode(bmi160_t *dev, bmi160_pmu_acc_mode_t accMode, bmi16
     bmi160_write_reg(dev, BMI160_CMD, accMode);
     vTaskDelay(pdMS_TO_TICKS(100));
     bmi160_read_reg(dev, BMI160_PMU_STATUS, &pmu_status);
-    if(((pmu_status & 0x30) >> 4) != (accMode & 0x3))
-    {
+    if (((pmu_status & 0x30) >> 4) != (accMode & 0x3)) {
         ESP_LOGE(TAG, "Accelerometer PMU status: 0x%02x", (pmu_status & 0x30) >> 4);
         return ESP_FAIL;
     }
@@ -668,12 +620,11 @@ esp_err_t bmi160_switch_mode(bmi160_t *dev, bmi160_pmu_acc_mode_t accMode, bmi16
     bmi160_write_reg(dev, BMI160_CMD, gyrMode);
     vTaskDelay(pdMS_TO_TICKS(100));
     bmi160_read_reg(dev, BMI160_PMU_STATUS, &pmu_status);
-    if(((pmu_status & 0x0C) >> 2) != (gyrMode & 0x3))
-    {
+    if (((pmu_status & 0x0C) >> 2) != (gyrMode & 0x3)) {
         ESP_LOGE(TAG, "Gyroscope PMU status: 0x%02x", (pmu_status & 0x0C) >> 2);
         return ESP_FAIL;
     }
-    
+
 
     return ESP_OK;
 }
@@ -705,34 +656,25 @@ esp_err_t bmi160_enable_int_tap(bmi160_t *dev, bmi160_int_out_conf_t* intOutConf
     bmi160_write_reg(dev, BMI160_INT_OUT_CTRL, data);
 
     //map interrupt step detection
-    if(dev->tapMode == BMI160_TAP_MODE_SINGLE)
-    {
+    if (dev->tapMode == BMI160_TAP_MODE_SINGLE) {
         data = (1u << 5); //set bit for single tap detection
-    }
-    else
-    {
+    } else {
         data = (1u << 4); //set bit for double tap detection
     }
-    if(intOutConf->intPin == BMI160_PIN_INT1)
-    {
+    if (intOutConf->intPin == BMI160_PIN_INT1) {
         bmi160_write_reg(dev, BMI160_INT_MAP_0, data); //map step detection interrupt to INT1
-    }
-    else
-    {
+    } else {
         bmi160_write_reg(dev, BMI160_INT_MAP_0, data); //map step detection interrupt to INT2
     }
-    
-    //enable interrupt    
+
+    //enable interrupt
     bmi160_read_reg(dev, BMI160_INT_EN_0, &data);
-    if(dev->tapMode == BMI160_TAP_MODE_SINGLE)
-    {
+    if (dev->tapMode == BMI160_TAP_MODE_SINGLE) {
         data |= (1u << 5); //set bit for single tap detection
-    }
-    else
-    {
+    } else {
         data |= (1u << 4); //set bit for double tap detection
     }
-    bmi160_write_reg(dev, BMI160_INT_EN_0, data);    
+    bmi160_write_reg(dev, BMI160_INT_EN_0, data);
 
     return ESP_OK;
 }
