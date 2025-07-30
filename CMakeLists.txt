@@ -1,4 +1,4 @@
-idf_component_register(SRCS "template-component.c"
+idf_component_register(SRCS "bmi160.c"
                     INCLUDE_DIRS "include")
 
 # include common cmake file for components

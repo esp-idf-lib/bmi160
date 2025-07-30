@@ -18,9 +18,9 @@ maintainers:
   - Tomoyuki Sakurai (@trombik) <y@trombik.org>
   - Ruslan V. Uss (@UncleRus) <unclerus@gmail.com>
 url: https://github.com/esp-idf-lib/core
-repository: https://github.com/esp-idf-lib/template-component
-documentation: https://esp-idf-lib.github.io/template-component/
-issues: https://github.com/esp-idf-lib/template-component/issues
+repository: https://github.com/esp-idf-lib/bmi160
+documentation: https://esp-idf-lib.github.io/bmi160/
+issues: https://github.com/esp-idf-lib/bmi160/issues
 discussion: https://github.com/esp-idf-lib/core/discussions
 files:
   exclude:

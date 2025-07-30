@@ -13,4 +13,4 @@ jobs:
       api_token: ${{ secrets.ESP_TOKEN }}
     with:
       components: |
-        template-component:.
+        bmi160:.

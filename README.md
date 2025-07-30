@@ -1,21 +1,21 @@
-# esp-idf-lib/template-component
+# esp-idf-lib/bmi160
 
-[![Build examples](https://github.com/esp-idf-lib/template-component/actions/workflows//build.yml/badge.svg)](https://github.com/esp-idf-lib/template-component/actions/workflows//build.yml)
-[![Build docs](https://github.com/esp-idf-lib/template-component/actions/workflows//build-docs.yml/badge.svg)](https://github.com/esp-idf-lib/template-component/actions/workflows//build-docs.yml)
-[![Validation](https://github.com/esp-idf-lib/template-component/actions/workflows//validate-component.yml/badge.svg)](https://github.com/esp-idf-lib/template-component/actions/workflows//validate-component.yml)
+[![Build examples](https://github.com/esp-idf-lib/bmi160/actions/workflows//build.yml/badge.svg)](https://github.com/esp-idf-lib/bmi160/actions/workflows//build.yml)
+[![Build docs](https://github.com/esp-idf-lib/bmi160/actions/workflows//build-docs.yml/badge.svg)](https://github.com/esp-idf-lib/bmi160/actions/workflows//build-docs.yml)
+[![Validation](https://github.com/esp-idf-lib/bmi160/actions/workflows//validate-component.yml/badge.svg)](https://github.com/esp-idf-lib/bmi160/actions/workflows//validate-component.yml)
 
 A template for esp-idf-lib component.
 
-* [Documentation](https://esp-idf-lib.github.io/template-component/)
-* [Repository](https://github.com/esp-idf-lib/template-component)
-* [Issues](https://github.com/esp-idf-lib/template-component/issues)
+* [Documentation](https://esp-idf-lib.github.io/bmi160/)
+* [Repository](https://github.com/esp-idf-lib/bmi160)
+* [Issues](https://github.com/esp-idf-lib/bmi160/issues)
 * [Discussions and questions](https://github.com/esp-idf-lib/core/discussions)
-* [Component page at the ESP Component Registry](https://components.espressif.com/components/esp-idf-lib/template-component)
+* [Component page at the ESP Component Registry](https://components.espressif.com/components/esp-idf-lib/bmi160)
 
 ## Installation
 
 ```sh
-idf.py add-dependency esp-idf-lib/template-component
+idf.py add-dependency esp-idf-lib/bmi160
 ```
 
 ## Support

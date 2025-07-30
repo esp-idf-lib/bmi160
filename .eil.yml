@@ -1,5 +1,5 @@
 ---
-name: template-component
+name: bmi160
 description: A template for esp-idf-lib component
 version: 1.0.0
 groups:
