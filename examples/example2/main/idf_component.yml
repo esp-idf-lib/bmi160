@@ -1,8 +1,0 @@
----
-
-version: 1.0.0
-description: Example 2
-dependencies:
-  esp-idf-lib/template-component:
-    version: "~1.0.0"
-    override_path: ../../../

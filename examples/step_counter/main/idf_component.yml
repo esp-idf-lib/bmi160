@@ -1,0 +1,7 @@
+---
+version: 1.0.0
+description: step_counter
+dependencies:
+  esp-idf-lib/bmi160:
+    version: "*"
+    override_path: "../../../"
