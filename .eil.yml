@@ -1,7 +1,7 @@
 ---
 name: bmi160
 description: A template for esp-idf-lib component
-version: 1.0.1
+version: 1.0.2
 groups:
   - common
 code_owners:

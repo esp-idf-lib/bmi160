@@ -1,4 +1,4 @@
-version: 1.0.1
+version: 1.0.2
 description: Ultra-small, low power, low noise 16 bit inertial measurement unit
 license: MIT
 targets:
