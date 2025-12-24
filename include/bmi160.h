@@ -23,6 +23,7 @@
 #include <stdbool.h>
 #include <i2cdev.h>
 #include <esp_err.h>
+#include <driver/gpio.h>
 
 #include "bmi160_reg.h"
 
