@@ -4,7 +4,7 @@
 [![Build docs](https://github.com/esp-idf-lib/bmi160/actions/workflows//build-docs.yml/badge.svg)](https://github.com/esp-idf-lib/bmi160/actions/workflows//build-docs.yml)
 [![Validation](https://github.com/esp-idf-lib/bmi160/actions/workflows//validate-component.yml/badge.svg)](https://github.com/esp-idf-lib/bmi160/actions/workflows//validate-component.yml)
 
-A template for esp-idf-lib component.
+ESP-IDF driver for ultra-small, low power, low noise 16 bit IMU BMI160
 
 * [Documentation](https://esp-idf-lib.github.io/bmi160/)
 * [Repository](https://github.com/esp-idf-lib/bmi160)

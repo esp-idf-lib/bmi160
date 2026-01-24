@@ -16,6 +16,17 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
+/**
+ * @file bmi160.h
+ * @defgroup bmi160 bmi160
+ * @{
+ *
+ * ESP-IDF driver for Small, low power inertial measurement unit BMI160
+ *
+ * Copyright (c) 2025 Lukasz Bielinski <lbielinski01@gmail.com>
+ *
+ * ISC Licensed as described in the file LICENSE
+ */
 #ifndef __BMI160_H__
 #define __BMI160_H__
 
@@ -38,7 +49,8 @@ extern "C" {
  * @brief enum for the accelerometer range
  *
  */
-typedef enum {
+typedef enum
+{
     BMI160_ACC_RANGE_2G = 0x03u, ///< +-2g
     BMI160_ACC_RANGE_4G = 0x05u, ///< +-4g
     BMI160_ACC_RANGE_8G = 0x08u, ///< +-8g
@@ -49,7 +61,8 @@ typedef enum {
  * @brief enum for the gyroscope range
  *
  */
-typedef enum {
+typedef enum
+{
     BMI160_GYR_RANGE_125DPS = 0x02u, ///< +-125dps
     BMI160_GYR_RANGE_250DPS = 0x00u, ///< +-250dps
     BMI160_GYR_RANGE_500DPS = 0x04u, ///< +-500dps
@@ -61,7 +74,8 @@ typedef enum {
  * @brief enum for the accelerometer ODR
  *
  */
-typedef enum {
+typedef enum
+{
     BMI160_ACC_ODR_0_78HZ = 0x01u, ///< 0.78Hz
     BMI160_ACC_ODR_1_56HZ = 0x02u, ///< 1.56Hz
     BMI160_ACC_ODR_3_12HZ = 0x03u, ///< 3.12Hz
@@ -80,7 +94,8 @@ typedef enum {
  * @brief enum for the gyroscope ODR
  *
  */
-typedef enum {
+typedef enum
+{
     BMI160_GYR_ODR_25HZ = 0x06u, ///< 25Hz
     BMI160_GYR_ODR_50HZ = 0x07u, ///< 50Hz
     BMI160_GYR_ODR_100HZ = 0x08u, ///< 100Hz
@@ -94,7 +109,8 @@ typedef enum {
  * @brief enum for int pin
  *
  */
-typedef enum {
+typedef enum
+{
     BMI160_PIN_INT1 = 0x00u, ///< INT1
     BMI160_PIN_INT2 = 0x01u ///< INT2
 } bmi160_int_pin_t;
@@ -103,7 +119,8 @@ typedef enum {
  * @brief enum for int enable
  *
  */
-typedef enum {
+typedef enum
+{
     BMI160_INT_DISABLE = 0x00u, ///< Disable interrupt
     BMI160_INT_ENABLE = 0x01u ///< Enable interrupt
 } bmi160_int_enable_t;
@@ -112,7 +129,8 @@ typedef enum {
  * @brief enum for int od
  *
  */
-typedef enum {
+typedef enum
+{
     BMI160_INT_PUSH_PULL = 0x00u, ///< Push-pull
     BMI160_INT_OPEN_DRAIN = 0x01u ///< Open-drain
 } bmi160_int_od_t;
@@ -121,7 +139,8 @@ typedef enum {
  * @brief enum for int level
  *
  */
-typedef enum {
+typedef enum
+{
     BMI160_INT_ACTIVE_LOW = 0x00u, ///< Active low
     BMI160_INT_ACTIVE_HIGH = 0x01u ///< Active high
 } bmi160_int_level_t;
@@ -130,7 +149,8 @@ typedef enum {
  * @brief step counter mode
  *
  */
-typedef enum {
+typedef enum
+{
     BMI160_STEP_COUNTER_NORMAL = 0x00u, ///< Normal mode
     BMI160_STEP_COUNTER_SENSITIVE = 0x01u, ///< Sensitive mode
     BMI160_STEP_COUNTER_ROBUST = 0x02u ///< Robust mode
@@ -140,7 +160,8 @@ typedef enum {
  * @brief Accelerometer PMU mode
  *
  */
-typedef enum {
+typedef enum
+{
     BMI160_PMU_ACC_SUSPEND = 0x10u, ///< Suspend mode
     BMI160_PMU_ACC_NORMAL = 0x11u, ///< Normal mode
     BMI160_PMU_ACC_LOW_POWER = 0x12u ///< Low power mode
@@ -150,7 +171,8 @@ typedef enum {
  * @brief Gyroscope PMU mode
  *
  */
-typedef enum {
+typedef enum
+{
     BMI160_PMU_GYR_SUSPEND = 0x14u, ///< Suspend mode
     BMI160_PMU_GYR_NORMAL = 0x15u, ///< Normal mode
     BMI160_PMU_GYR_FAST_STARTUP = 0x17u, ///< Fast startup mode
@@ -162,7 +184,8 @@ typedef enum {
  * @note For low power mode defines averaging, for normal mode defines filter bandwidth
  *
  */
-typedef enum {
+typedef enum
+{
     BMI160_ACC_LP_AVG_1 = 0x00u, ///< 1 sample
     BMI160_ACC_LP_AVG_2 = 0x01u, ///< 2 samples
     BMI160_ACC_LP_AVG_4 = 0x02u, ///< 4 samples
@@ -178,7 +201,8 @@ typedef enum {
  *
  * @note This is only applicable for low power mode
  */
-typedef enum {
+typedef enum
+{
     BMI160_ACC_US_ON = 0x01u, ///< Enable undersampling
     BMI160_ACC_US_OFF = 0x00u ///< Disable undersampling
 } bmi160_acc_us_t;
@@ -187,7 +211,8 @@ typedef enum {
  * @brief tap configuration quiet
  *
  */
-typedef enum {
+typedef enum
+{
     BMI160_TAP_QUIET_30MS = 0x00u, ///< 30ms
     BMI160_TAP_QUIET_20MS = 0x01u ///< 20ms
 } bmi160_tap_quiet_t;
@@ -196,7 +221,8 @@ typedef enum {
  * @brief tap mode
  *
  */
-typedef enum {
+typedef enum
+{
     BMI160_TAP_MODE_SINGLE = 0x00u, ///< Single tap
     BMI160_TAP_MODE_DOUBLE = 0x01u, ///< Double tap
 } bmi160_tap_mode_t;
@@ -205,7 +231,8 @@ typedef enum {
  * @brief tap configuration shock
  *
  */
-typedef enum {
+typedef enum
+{
     BMI160_TAP_SHOCK_50MS = 0x00u, ///< 50ms
     BMI160_TAP_SHOCK_75MS = 0x01u ///< 75ms
 } bmi160_tap_shock_t;
@@ -214,7 +241,8 @@ typedef enum {
  * @brief tap configuration duration
  *
  */
-typedef enum {
+typedef enum
+{
     BMI160_TAP_DUR_50MS = 0x00u, ///< 50ms
     BMI160_TAP_DUR_100MS = 0x01u, ///< 100ms
     BMI160_TAP_DUR_150MS = 0x02u,
@@ -229,7 +257,8 @@ typedef enum {
  * @brief tap threshold
  *
  */
-typedef enum {
+typedef enum
+{
     BMI160_TAP_TH_0_032G = 0x00u, ///< 0.032g
     BMI160_TAP_TH_0_0625G = 0x01u, ///< 0.0625g
     BMI160_TAP_TH_0_125G = 0x02u, ///< 0.125g
@@ -244,7 +273,8 @@ typedef enum {
  * @brief bmi160 configuration structure
  *
  */
-typedef struct {
+typedef struct
+{
     bmi160_acc_range_t accRange; ///< Accelerometer range
     bmi160_acc_odr_t accOdr; ///< Accelerometer ODR
     bmi160_pmu_acc_mode_t accMode; ///< Accelerometer PMU mode
@@ -259,7 +289,8 @@ typedef struct {
  * @brief result structure for the BMI160
  *
  */
-typedef struct {
+typedef struct
+{
     float accX; ///< Accelerometer X axis
     float accY; ///< Accelerometer Y axis
     float accZ; ///< Accelerometer Z axis
@@ -272,7 +303,8 @@ typedef struct {
  * @brief int out configuration
  *
  */
-typedef struct {
+typedef struct
+{
     bmi160_int_pin_t intPin; ///< Interrupt pin
     bmi160_int_enable_t intEnable; ///< Enable interrupt
     bmi160_int_od_t intOd; ///< Open-drain
@@ -283,7 +315,8 @@ typedef struct {
  * @brief tap configuration
  *
  */
-typedef struct {
+typedef struct
+{
     bmi160_tap_quiet_t tapQuiet; ///< Tap quiet
     bmi160_tap_shock_t tapShock; ///< Tap shock
     bmi160_tap_dur_t tapDur; ///< Tap duration
@@ -294,7 +327,8 @@ typedef struct {
 /**
  *  Device descriptor
  */
-typedef struct {
+typedef struct
+{
     i2c_dev_t i2c_dev;              ///< I2C device descriptor
     float aBias[3];                 ///< Accelerometer bias
     float gBias[3];                 ///< Gyroscope bias
@@ -526,5 +560,7 @@ esp_err_t bmi160_read_tap_orient(bmi160_t *dev, uint8_t *orient);
 #ifdef __cplusplus
 }
 #endif
+
+/**@}*/
 
 #endif /* __BMI160_H__ */

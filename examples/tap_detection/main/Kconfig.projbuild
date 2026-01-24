@@ -10,7 +10,7 @@ menu "BMI160 Example Configuration"
             bool "BMI160_I2C_ADDRESS_GND"
             help
                 Choose this when SDO pin is connected to ground
-        config EXAMPLE_I2C_ADDRESS_HIGH
+        config EXAMPLE_I2C_ADDRESS_VDD
             bool "BMI160_I2C_ADDRESS_VDD"
             help
                 Choose this when SDO pin is connected to VCC

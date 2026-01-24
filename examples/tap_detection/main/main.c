@@ -79,7 +79,8 @@ void bmi160_task(void *pvParameters)
 
     ESP_ERROR_CHECK(bmi160_self_test(&bmi160_dev));
 
-    bmi160_conf_t bmi160_conf = {
+    bmi160_conf_t bmi160_conf =
+    {
         .accRange = BMI160_ACC_RANGE_2G,
         .accOdr = BMI160_ACC_ODR_100HZ,
         .accAvg = BMI160_ACC_LP_AVG_8,
@@ -93,7 +94,8 @@ void bmi160_task(void *pvParameters)
     ESP_ERROR_CHECK(bmi160_start(&bmi160_dev, &bmi160_conf));
 
     //configure tap detection
-    bmi160_tap_conf_t tapConf = {
+    bmi160_tap_conf_t tapConf =
+    {
         .tapQuiet = BMI160_TAP_QUIET_20MS,
         .tapShock = BMI160_TAP_SHOCK_75MS,
         .tapDur = BMI160_TAP_DUR_250MS,
@@ -105,7 +107,8 @@ void bmi160_task(void *pvParameters)
 
 
     //enable interrupt on bmi160
-    bmi160_int_out_conf_t intOutConf = {
+    bmi160_int_out_conf_t intOutConf =
+    {
         .intPin = BMI160_PIN_INT1,
         .intEnable = BMI160_INT_ENABLE,
         .intOd = BMI160_INT_PUSH_PULL,
@@ -113,7 +116,8 @@ void bmi160_task(void *pvParameters)
     };
     bmi160_enable_int_tap(&bmi160_dev, &intOutConf);
 
-    while (1) {
+    while (1)
+    {
         //wait for interrupt
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 
