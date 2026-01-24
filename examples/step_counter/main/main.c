@@ -55,7 +55,7 @@ void bmi160_task(void *pvParameters)
 
     i2cdev_init();
 
-#ifdef USE_INT
+#ifdef USE_NEW_DATA_INT
     //zero-initialize the config structure.
     gpio_config_t io_conf = {};
     //interrupt of rising edge
@@ -84,7 +84,8 @@ void bmi160_task(void *pvParameters)
 
     ESP_ERROR_CHECK(bmi160_self_test(&bmi160_dev));
 
-    bmi160_conf_t bmi160_conf = {
+    bmi160_conf_t bmi160_conf =
+    {
         .accRange = BMI160_ACC_RANGE_2G,
         .accOdr = BMI160_ACC_ODR_1_56HZ,
         .accAvg = BMI160_ACC_LP_AVG_8,
@@ -100,9 +101,10 @@ void bmi160_task(void *pvParameters)
     ESP_ERROR_CHECK(bmi160_enable_step_counter(&bmi160_dev, BMI160_STEP_COUNTER_SENSITIVE));
 
 
-#ifdef USE_INT
+#ifdef USE_NEW_DATA_INT
     //enable interrupt on bmi160
-    bmi160_int_out_conf_t intOutConf = {
+    bmi160_int_out_conf_t intOutConf =
+    {
         .intPin = BMI160_PIN_INT1,
         .intEnable = BMI160_INT_ENABLE,
         .intOd = BMI160_INT_PUSH_PULL,
@@ -111,9 +113,10 @@ void bmi160_task(void *pvParameters)
     ESP_ERROR_CHECK(bmi160_enable_int_step(&bmi160_dev, &intOutConf));
 #endif
 
-    while (1) {
+    while (1)
+    {
 
-#ifdef USE_INT
+#ifdef USE_NEW_DATA_INT
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 #else
         vTaskDelay(pdMS_TO_TICKS(10000));
@@ -123,7 +126,8 @@ void bmi160_task(void *pvParameters)
 
         uint16_t step_count = 0;
         esp_err_t ret = bmi160_read_step_counter(&bmi160_dev, &step_count);
-        if (ret == ESP_OK) {
+        if (ret == ESP_OK)
+        {
             ESP_LOGI(TAG, "Step count: %d\n", step_count);
         }
 

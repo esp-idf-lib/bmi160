@@ -1,10 +1,11 @@
-idf_component_register(SRCS "bmi160.c"
-                    INCLUDE_DIRS "include")
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/eil-cmake-utils/cmake)
+include(eil_check_idf_features)
+eil_check_idf_has_esp_drivers()
 
-# include common cmake file for components
-set(ESP_IDF_LIB_CMAKE ${CMAKE_CURRENT_LIST_DIR}/common/cmake/esp-idf-lib.cmake)
-if(EXISTS ${ESP_IDF_LIB_CMAKE})
-    include(${ESP_IDF_LIB_CMAKE})
-else()
-    message(WARNING "${ESP_IDF_LIB_CMAKE} not found")
-endif()
+idf_component_register(
+    SRCS bmi160.c
+    INCLUDE_DIRS "include"
+    REQUIRES i2cdev log esp_idf_lib_helpers
+)
+
+include(eil_ci)

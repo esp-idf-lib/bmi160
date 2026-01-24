@@ -85,7 +85,8 @@ void bmi160_test(void *pvParameters)
 
     ESP_ERROR_CHECK(bmi160_self_test(&bmi160_dev));
 
-    bmi160_conf_t bmi160_conf = {
+    bmi160_conf_t bmi160_conf =
+    {
         .accRange = BMI160_ACC_RANGE_2G,
         .accOdr = BMI160_ACC_ODR_200HZ,
         .accAvg = BMI160_ACC_LP_AVG_2,
@@ -102,7 +103,8 @@ void bmi160_test(void *pvParameters)
 
 #ifdef USE_NEW_DATA_INT
     //enable interrupt on bmi160
-    bmi160_int_out_conf_t intOutConf = {
+    bmi160_int_out_conf_t intOutConf =
+    {
         .intPin = BMI160_PIN_INT1,
         .intEnable = BMI160_INT_ENABLE,
         .intOd = BMI160_INT_PUSH_PULL,
@@ -111,22 +113,27 @@ void bmi160_test(void *pvParameters)
     ESP_ERROR_CHECK(bmi160_enable_int_new_data(&bmi160_dev, &intOutConf));
 #endif
 
-    while (1) {
+    while (1)
+    {
 
 #ifdef USE_NEW_DATA_INT
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 
         bmi160_result_t result;
         esp_err_t ret = bmi160_read_data(&bmi160_dev, &result);
-        if (ret == ESP_OK) {
+        if (ret == ESP_OK)
+        {
             ESP_LOGI(TAG, "%+.3f %+.3f %+.3f %+.3f %+.3f %+.3f\n", result.accX, result.accY, result.accZ, result.gyroX, result.gyroY, result.gyroZ);
-        } else {
+        }
+        else
+        {
             ESP_LOGI(TAG, "No new data\n");
         }
 #else
         bmi160_result_t result;
         esp_err_t ret = bmi160_read_data(&bmi160_dev, &result);
-        if (ret == ESP_OK) {
+        if (ret == ESP_OK)
+        {
             //print all data in format with 3 decimal places
             ESP_LOGI(TAG, "Accel: %+.3f %+.3f %+.3f Gyro: %+.3f %+.3f %+.3f\n", result.accX, result.accY, result.accZ, result.gyroX, result.gyroY, result.gyroZ);
         }
