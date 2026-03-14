@@ -63,11 +63,11 @@ typedef enum
  */
 typedef enum
 {
-    BMI160_GYR_RANGE_125DPS = 0x02u, ///< +-125dps
-    BMI160_GYR_RANGE_250DPS = 0x00u, ///< +-250dps
-    BMI160_GYR_RANGE_500DPS = 0x04u, ///< +-500dps
-    BMI160_GYR_RANGE_1000DPS = 0x06u, ///< +-1000dps
-    BMI160_GYR_RANGE_2000DPS = 0x08u ///< +-2000dps
+    BMI160_GYR_RANGE_2000DPS = 0x00u,  ///< +-2000dps
+    BMI160_GYR_RANGE_1000DPS = 0x01u, ///< +-1000dps
+    BMI160_GYR_RANGE_500DPS = 0x02u,  ///< +-500dps
+    BMI160_GYR_RANGE_250DPS = 0x03u,  ///< +-250dps
+    BMI160_GYR_RANGE_125DPS = 0x04u  ///< +-125dps
 } bmi160_gyr_range_t;
 
 /**
