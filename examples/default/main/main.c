@@ -77,9 +77,9 @@ void bmi160_test(void *pvParameters)
     //hook isr handler for specific gpio pin
     gpio_isr_handler_add(CONFIG_EXAMPLE_INT1_GPIO, isr_new_data, NULL);
 #endif
-    ESP_LOGI(TAG, "Example for data read out \n");
+    ESP_LOGI(TAG, "Example for data read out");
 
-    ESP_LOGI(TAG, "Initializing BMI160\n");
+    ESP_LOGI(TAG, "Initializing BMI160");
 
     ESP_ERROR_CHECK(bmi160_init(&bmi160_dev, ADDR, I2C_PORT, CONFIG_EXAMPLE_SDA_GPIO, CONFIG_EXAMPLE_SCL_GPIO));
 
@@ -123,11 +123,11 @@ void bmi160_test(void *pvParameters)
         esp_err_t ret = bmi160_read_data(&bmi160_dev, &result);
         if (ret == ESP_OK)
         {
-            ESP_LOGI(TAG, "%+.3f %+.3f %+.3f %+.3f %+.3f %+.3f\n", result.accX, result.accY, result.accZ, result.gyroX, result.gyroY, result.gyroZ);
+            ESP_LOGI(TAG, "%+.3f %+.3f %+.3f %+.3f %+.3f %+.3f", result.accX, result.accY, result.accZ, result.gyroX, result.gyroY, result.gyroZ);
         }
         else
         {
-            ESP_LOGI(TAG, "No new data\n");
+            ESP_LOGI(TAG, "No new data");
         }
 #else
         bmi160_result_t result;
@@ -135,7 +135,7 @@ void bmi160_test(void *pvParameters)
         if (ret == ESP_OK)
         {
             //print all data in format with 3 decimal places
-            ESP_LOGI(TAG, "Accel: %+.3f %+.3f %+.3f Gyro: %+.3f %+.3f %+.3f\n", result.accX, result.accY, result.accZ, result.gyroX, result.gyroY, result.gyroZ);
+            ESP_LOGI(TAG, "Accel: %+.3f %+.3f %+.3f Gyro: %+.3f %+.3f %+.3f", result.accX, result.accY, result.accZ, result.gyroX, result.gyroY, result.gyroZ);
         }
 
         vTaskDelay(pdMS_TO_TICKS(1000));

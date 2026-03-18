@@ -341,6 +341,8 @@ typedef struct
     bmi160_gyr_odr_t gyrOdr;        ///< Gyroscope ODR
     gpio_num_t intPin;              ///< Interrupt pin
     bmi160_tap_mode_t   tapMode;   ///< Tap mode
+    bmi160_pmu_acc_mode_t accMode;  ///< Accelerometer mode
+    bmi160_pmu_gyr_mode_t gyrMode;  ///< Gyroscope mode
     void (*callback)();        ///< Interrupt callback
 } bmi160_t;
 
@@ -413,7 +415,7 @@ esp_err_t bmi160_calibrate(bmi160_t *dev);
  * @param conf Pointer to the configuration structure
  * @return esp_err_t ESP_OK if success
  */
-esp_err_t bmi160_start(bmi160_t *dev, bmi160_conf_t* conf);
+esp_err_t bmi160_start(bmi160_t *dev, const bmi160_conf_t* const conf);
 
 /**
  * @brief Read data from the BMI160
@@ -479,7 +481,7 @@ esp_err_t bmi160_self_test(bmi160_t *dev);
  * @return esp_err_t ESP_OK if success
  *
  */
-esp_err_t bmi160_enable_int_new_data(bmi160_t *dev, bmi160_int_out_conf_t* intOutConf);
+esp_err_t bmi160_enable_int_new_data(bmi160_t *dev, const bmi160_int_out_conf_t* const intOutConf);
 
 /**
  * @brief configure step counter
@@ -518,7 +520,7 @@ esp_err_t bmi160_reset_step_counter(bmi160_t *dev);
  * @return esp_err_t ESP_OK if success
  *
  */
-esp_err_t bmi160_enable_int_step(bmi160_t *dev, bmi160_int_out_conf_t* intOutConf);
+esp_err_t bmi160_enable_int_step(bmi160_t *dev, const bmi160_int_out_conf_t* const intOutConf);
 
 /**
  * @brief switch mode for the BMI160
@@ -534,7 +536,7 @@ esp_err_t bmi160_switch_mode(bmi160_t *dev, bmi160_pmu_acc_mode_t accMode, bmi16
  *
  * @return esp_err_t ESP_OK if success
  */
-esp_err_t bmi160_enable_tap_detection(bmi160_t *dev, bmi160_tap_conf_t* tapConf);
+esp_err_t bmi160_enable_tap_detection(bmi160_t *dev, const bmi160_tap_conf_t* const tapConf);
 
 /**
  * @brief Enable interrupt for the BMI160 for tap detection
@@ -545,7 +547,7 @@ esp_err_t bmi160_enable_tap_detection(bmi160_t *dev, bmi160_tap_conf_t* tapConf)
  * @return esp_err_t ESP_OK if success
  *
  */
-esp_err_t bmi160_enable_int_tap(bmi160_t *dev, bmi160_int_out_conf_t* intOutConf);
+esp_err_t bmi160_enable_int_tap(bmi160_t *dev, const bmi160_int_out_conf_t* const intOutConf);
 
 /**
  * @brief read tap orientation
