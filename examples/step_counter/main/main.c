@@ -77,9 +77,9 @@ void bmi160_task(void *pvParameters)
     //hook isr handler for specific gpio pin
     gpio_isr_handler_add(CONFIG_EXAMPLE_INT1_GPIO, isr_new_data, NULL);
 #endif
-    ESP_LOGI(TAG, "Example for step counter\n");
+    ESP_LOGI(TAG, "Example for step counter");
 
-    ESP_LOGI(TAG, "Initializing BMI160\n");
+    ESP_LOGI(TAG, "Initializing BMI160");
     ESP_ERROR_CHECK(bmi160_init(&bmi160_dev, BMI160_I2C_ADDRESS_VDD, I2C_PORT, CONFIG_EXAMPLE_SDA_GPIO, CONFIG_EXAMPLE_SCL_GPIO));
 
     ESP_ERROR_CHECK(bmi160_self_test(&bmi160_dev));
@@ -128,7 +128,7 @@ void bmi160_task(void *pvParameters)
         esp_err_t ret = bmi160_read_step_counter(&bmi160_dev, &step_count);
         if (ret == ESP_OK)
         {
-            ESP_LOGI(TAG, "Step count: %d\n", step_count);
+            ESP_LOGI(TAG, "Step count: %d", step_count);
         }
 
         //go back to low power mode
