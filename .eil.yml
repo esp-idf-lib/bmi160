@@ -22,7 +22,6 @@ targets:
   - esp32p4
   - esp32s2
   - esp32s3
-  - esp8266
 license: ISC
 copyrights:
   - name: lukbieli
