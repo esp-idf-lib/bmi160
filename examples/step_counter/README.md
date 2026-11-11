@@ -15,7 +15,7 @@ resistors.
 |------|-------------|----------|
 | `CONFIG_EXAMPLE_I2C_MASTER_SCL` | GPIO number for `SCL` | "6" for `esp32c3`, "19" for `esp32`, `esp32s2`, and `esp32s3` |
 | `CONFIG_EXAMPLE_I2C_MASTER_SDA` | GPIO number for `SDA` | "5" for `esp32c3`, "18" for `esp32`, `esp32s2`, and `esp32s3` |
-| `CONFIG_EXAMPLE_INT1` | GPIO number for `INT1` | "5" for `esp32c3`, "2" for `esp32`, `esp32s2`, and `esp32s3` |
+| `CONFIG_EXAMPLE_INT1_GPIO` | GPIO number for `INT1` | "5" for `esp32`, `esp32s2`, and `esp32s3`, "2" for `esp32c2`, `esp32c3`, `esp32c5`, `esp32c6`, `esp32c61`, `esp32h2`, and `esp32p4` |
 
 ## Notes
 - Choose I2C address under `Example configuration` in `menuconfig`. The default is
