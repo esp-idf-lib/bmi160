@@ -1,7 +1,7 @@
 ---
 name: bmi160
 description: Driver for BMI160 ultra-small, low power, low noise 16 bit IMU
-version: 1.1.0
+version: 1.1.1
 groups:
   - imu
 code_owners:
@@ -11,17 +11,6 @@ depends:
   - log
   - esp_idf_lib_helpers
 thread_safe: yes
-targets:
-  - esp32
-  - esp32c2
-  - esp32c3
-  - esp32c5
-  - esp32c6
-  - esp32c61
-  - esp32h2
-  - esp32p4
-  - esp32s2
-  - esp32s3
 license: ISC
 copyrights:
   - name: lukbieli
